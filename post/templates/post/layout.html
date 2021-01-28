@@ -1,0 +1,68 @@
+{% extends 'post/base.html' %}
+
+
+{% block css %}
+<style>
+    
+</style>
+{% endblock %} 
+
+
+
+{% block body %}
+{% for subject in subjects %}
+<div>
+    
+    <h2 class="title"> {{ subject.title }} </h2>
+    <div class="content"> {{ subject.content }} </div>
+    <img src="{{ subject.image.url }}">
+    {% for comment in subject.comments.all %}
+        <div class="comment"> {{ subject.comment }} </div>
+    {% endfor %}
+    <button type="submit" onclick="onClickBtn({{ subject.id }}, 'like')" name="type" value="like">{{ subject.like }}</button>
+    
+</div>
+{% endfor %}
+
+{% endblock %}
+
+
+
+{% block js %}
+<script>
+    const request = new XMLHttpRequest();
+
+    const onClickBtn = async (id, type) => {
+        const url = "/subjects/src/";
+        request.open("POST", url, true);
+        request.setRequestHeader(
+            "Content-Type",
+            "application/x-www-form-urlencoded"
+        );
+        request.send(JSON.stringify({ type: type, id: id }));
+    };
+
+    const handleResponse = () => {
+        if (request.status <= 400) {
+            const { id, type } = JSON.parse(request.response);
+
+            const element = document.querySelector(
+                `#form-${id} button[value=${type}]`
+            );
+            const origin = element.innerText;
+            const [typeStr, num] = origin.split(" "); // ["Likes", '1']
+            const count = Number(num) + 1;
+            element.innerText = `${typeStr} ${count}`;
+        }
+    };
+
+    request.onreadystatechange = () => {
+        if (request.readyState === XMLHttpRequest.DONE) {
+            handleResponse();
+        }
+    };
+
+    
+</script>
+  
+{% endblock %}
