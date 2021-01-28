@@ -32,7 +32,7 @@ class AjaxView(View):
         else: subject.like = False
         subject.save()
 
-        return JsonResponse({{'id': subject_id}})
+        return JsonResponse({'id': subject_id})
 
 
 
