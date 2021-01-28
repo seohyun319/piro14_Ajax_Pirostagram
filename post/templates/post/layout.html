@@ -3,7 +3,34 @@
 
 {% block css %}
 <style>
+
+    .wrapper {
+        width: 80%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .container1 {
+        width: 350px; height: 300px; border: 1px solid gray;
+        align-items: center;
+    }
+
+    .container1 img {
+        width: 350px; height: 300px;
+        
+    }
     
+
+    .container2 {
+        width: 300px; height: 300px; border: 1px solid gray;
+    }
+
+    .container2 .title {
+        text-align: center; border-bottom: 1px solid gray; 
+        justify-content: center; align-items: center; height: 30px; line-height:15px;
+    }
+
 </style>
 {% endblock %} 
 
@@ -11,15 +38,31 @@
 
 {% block body %}
 {% for subject in subjects %}
-<div>
+<div class="wrapper">
+    <div class="container1">
+        <img src="{{ subject.image.url }}">
+    </div>    
+    <div class="container2">
+        <h2 class="title"> {{ subject.title }} </h2>
+        <div class="content"> {{ subject.content }} </div>
+        <div class="comment_t">댓글
+            {% for comment in subject.comments.all %}
+                <div class="comment"> {{ subject.comment }} </div>
+            {% endfor %}
+        </div>
+        
+        <button type="submit" onclick="onClickBtn({{ subject.id }}, 'like')" name="type" value="like">
+            {% if subject.like == False %}
+                <script src="https://kit.fontawesome.com/131f1805d6.js" crossorigin="anonymous"></script>
+                <i class="far fa-heart"></i>
+                <p>게시물이 마음에 드신다면 좋아요를 눌러주세요!</p>
+            {% else %} 
+                <i class="fas fa-heart"></i>
+                <p>이 게시물에 좋아요를 누르셨습니다!</p>
+            {% endif %}
+        </button>
+    </div>
     
-    <h2 class="title"> {{ subject.title }} </h2>
-    <div class="content"> {{ subject.content }} </div>
-    <img src="{{ subject.image.url }}">
-    {% for comment in subject.comments.all %}
-        <div class="comment"> {{ subject.comment }} </div>
-    {% endfor %}
-    <button type="submit" onclick="onClickBtn({{ subject.id }}, 'like')" name="type" value="like">{{ subject.like }}</button>
     
 </div>
 {% endfor %}
@@ -33,7 +76,7 @@
     const request = new XMLHttpRequest();
 
     const onClickBtn = async (id, type) => {
-        const url = "/subjects/src/";
+        const url = "/subjects/ajax/";
         request.open("POST", url, true);
         request.setRequestHeader(
             "Content-Type",
