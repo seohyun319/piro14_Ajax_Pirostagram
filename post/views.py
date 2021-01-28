@@ -47,15 +47,15 @@ class AjaxView(View):
         return JsonResponse({'id': subject_id, 'value':comment_value})
 
 
-     def comment_delete(self, request):
-         request = json.loads(request.body)
-         subject_id = request['id']
-         comment_value = request['value']
+    def comment_delete(self, request):
+        request = json.loads(request.body)
+        subject_id = request['id']
+        comment_value = request['value']
 
-         comment = Comment.objects.get(id=comment.id)
-         comment.delete()
+        comment = Comment.objects.get(id=comment.id)
+        comment.delete()
 
-         return JsonResponse({'id': subject_id, 'value':comment_value})
+        return JsonResponse({'id': subject_id, 'value':comment_value})
 
 
 
