@@ -8,5 +8,5 @@ class Subject(models.Model):
     like = models.BooleanField(default=False)
 
 class Comment(models.Model):
-    subject = models.ForeignKey("Subject", related_name = "comments" ,on_delete=models.CASCADE, blank=True, default=None)
+    subject = models.ForeignKey("Subject", related_name = "comments", on_delete=models.CASCADE, blank=True, default=None)
     comment = models.CharField(max_length=100, blank=True)

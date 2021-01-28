@@ -24,16 +24,15 @@ class AjaxView(View):
 
     def post(self, request):
         request = json.loads(request.body)
-        button_type = request['type']
         subject_id = request['id']
 
         subject = Subject.objects.get(id=subject_id)
-        if button_type == False:
+        if subject.like == False:
             subject.like = True
         else: subject.like = False
         subject.save()
 
-        return JsonResponse({'id': subject_id, 'type': button_type})
+        return JsonResponse({{'id': subject_id}})
 
 
 
